@@ -1,6 +1,6 @@
 Package: synhist
-Title: Template R package
-Version: 0.0
+Title: Synthesize historical data using power or mixture priors
+Version: 1.0
 Authors@R:
     person(given = "Chenguang",
            family = "Wang",

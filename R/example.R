@@ -1,7 +1,7 @@
 #' Get posteriors
 #'
 #' @param dta data frame that contains group identifier and binary outcome
-#' @param method \code{powerp} for power prior; \code{{mixp} for mixture prior
+#' @param method \code{powerp} for power prior; \code{mixp} for mixture prior
 #' @param var_grp column name in dta for the group identifier
 #' @param var_outcome column name in dta for the binary outcome
 #' @param vague_ab alpha and beta parameter for the vague beta prior. Defaults

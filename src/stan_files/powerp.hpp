@@ -36,7 +36,7 @@ static int current_statement_begin__;
 stan::io::program_reader prog_reader__() {
     stan::io::program_reader reader;
     reader.add_event(0, 0, "start", "model_powerp");
-    reader.add_event(37, 35, "end", "model_powerp");
+    reader.add_event(31, 29, "end", "model_powerp");
     return reader;
 }
 
@@ -44,12 +44,11 @@ stan::io::program_reader prog_reader__() {
  class model_powerp : public prob_grad {
 private:
         int S;
-        std::vector<int> N;
-        std::vector<int> YSUM;
-        std::vector<double> AB;
+        std::vector<double> N;
+        std::vector<double> YSUM;
         int NCUR;
         int YSUMCUR;
-        std::vector<double> POWER;
+        std::vector<double> WEIGHTS;
 public:
     model_powerp(stan::io::var_context& context__,
         std::ostream* pstream__ = 0)
@@ -96,50 +95,35 @@ public:
 
             current_statement_begin__ = 8;
             validate_non_negative_index("N", "S", S);
-            context__.validate_dims("data initialization", "N", "int", context__.to_vec(S));
-            N = std::vector<int>(S, int(0));
-            vals_i__ = context__.vals_i("N");
+            context__.validate_dims("data initialization", "N", "double", context__.to_vec(S));
+            N = std::vector<double>(S, double(0));
+            vals_r__ = context__.vals_r("N");
             pos__ = 0;
             size_t N_k_0_max__ = S;
             for (size_t k_0__ = 0; k_0__ < N_k_0_max__; ++k_0__) {
-                N[k_0__] = vals_i__[pos__++];
+                N[k_0__] = vals_r__[pos__++];
             }
             size_t N_i_0_max__ = S;
             for (size_t i_0__ = 0; i_0__ < N_i_0_max__; ++i_0__) {
-                check_greater_or_equal(function__, "N[i_0__]", N[i_0__], 1);
+                check_greater_or_equal(function__, "N[i_0__]", N[i_0__], 0);
             }
 
             current_statement_begin__ = 9;
             validate_non_negative_index("YSUM", "S", S);
-            context__.validate_dims("data initialization", "YSUM", "int", context__.to_vec(S));
-            YSUM = std::vector<int>(S, int(0));
-            vals_i__ = context__.vals_i("YSUM");
+            context__.validate_dims("data initialization", "YSUM", "double", context__.to_vec(S));
+            YSUM = std::vector<double>(S, double(0));
+            vals_r__ = context__.vals_r("YSUM");
             pos__ = 0;
             size_t YSUM_k_0_max__ = S;
             for (size_t k_0__ = 0; k_0__ < YSUM_k_0_max__; ++k_0__) {
-                YSUM[k_0__] = vals_i__[pos__++];
+                YSUM[k_0__] = vals_r__[pos__++];
             }
             size_t YSUM_i_0_max__ = S;
             for (size_t i_0__ = 0; i_0__ < YSUM_i_0_max__; ++i_0__) {
                 check_greater_or_equal(function__, "YSUM[i_0__]", YSUM[i_0__], 0);
             }
 
-            current_statement_begin__ = 10;
-            validate_non_negative_index("AB", "2", 2);
-            context__.validate_dims("data initialization", "AB", "double", context__.to_vec(2));
-            AB = std::vector<double>(2, double(0));
-            vals_r__ = context__.vals_r("AB");
-            pos__ = 0;
-            size_t AB_k_0_max__ = 2;
-            for (size_t k_0__ = 0; k_0__ < AB_k_0_max__; ++k_0__) {
-                AB[k_0__] = vals_r__[pos__++];
-            }
-            size_t AB_i_0_max__ = 2;
-            for (size_t i_0__ = 0; i_0__ < AB_i_0_max__; ++i_0__) {
-                check_greater_or_equal(function__, "AB[i_0__]", AB[i_0__], 0);
-            }
-
-            current_statement_begin__ = 12;
+            current_statement_begin__ = 11;
             context__.validate_dims("data initialization", "NCUR", "int", context__.to_vec());
             NCUR = int(0);
             vals_i__ = context__.vals_i("NCUR");
@@ -147,7 +131,7 @@ public:
             NCUR = vals_i__[pos__++];
             check_greater_or_equal(function__, "NCUR", NCUR, 1);
 
-            current_statement_begin__ = 13;
+            current_statement_begin__ = 12;
             context__.validate_dims("data initialization", "YSUMCUR", "int", context__.to_vec());
             YSUMCUR = int(0);
             vals_i__ = context__.vals_i("YSUMCUR");
@@ -155,20 +139,20 @@ public:
             YSUMCUR = vals_i__[pos__++];
             check_greater_or_equal(function__, "YSUMCUR", YSUMCUR, 0);
 
-            current_statement_begin__ = 15;
-            validate_non_negative_index("POWER", "S", S);
-            context__.validate_dims("data initialization", "POWER", "double", context__.to_vec(S));
-            POWER = std::vector<double>(S, double(0));
-            vals_r__ = context__.vals_r("POWER");
+            current_statement_begin__ = 14;
+            validate_non_negative_index("WEIGHTS", "S", S);
+            context__.validate_dims("data initialization", "WEIGHTS", "double", context__.to_vec(S));
+            WEIGHTS = std::vector<double>(S, double(0));
+            vals_r__ = context__.vals_r("WEIGHTS");
             pos__ = 0;
-            size_t POWER_k_0_max__ = S;
-            for (size_t k_0__ = 0; k_0__ < POWER_k_0_max__; ++k_0__) {
-                POWER[k_0__] = vals_r__[pos__++];
+            size_t WEIGHTS_k_0_max__ = S;
+            for (size_t k_0__ = 0; k_0__ < WEIGHTS_k_0_max__; ++k_0__) {
+                WEIGHTS[k_0__] = vals_r__[pos__++];
             }
-            size_t POWER_i_0_max__ = S;
-            for (size_t i_0__ = 0; i_0__ < POWER_i_0_max__; ++i_0__) {
-                check_greater_or_equal(function__, "POWER[i_0__]", POWER[i_0__], 0);
-                check_less_or_equal(function__, "POWER[i_0__]", POWER[i_0__], 1);
+            size_t WEIGHTS_i_0_max__ = S;
+            for (size_t i_0__ = 0; i_0__ < WEIGHTS_i_0_max__; ++i_0__) {
+                check_greater_or_equal(function__, "WEIGHTS[i_0__]", WEIGHTS[i_0__], 0);
+                check_less_or_equal(function__, "WEIGHTS[i_0__]", WEIGHTS[i_0__], 1);
             }
 
 
@@ -180,7 +164,7 @@ public:
             // validate, set parameter ranges
             num_params_r__ = 0U;
             param_ranges_i__.clear();
-            current_statement_begin__ = 19;
+            current_statement_begin__ = 18;
             num_params_r__ += 1;
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());
@@ -203,7 +187,7 @@ public:
         std::vector<double> vals_r__;
         std::vector<int> vals_i__;
 
-        current_statement_begin__ = 19;
+        current_statement_begin__ = 18;
         if (!(context__.contains_r("theta")))
             stan::lang::rethrow_located(std::runtime_error(std::string("Variable theta missing")), current_statement_begin__, prog_reader__());
         vals_r__ = context__.vals_r("theta");
@@ -249,7 +233,7 @@ public:
             stan::io::reader<local_scalar_t__> in__(params_r__, params_i__);
 
             // model parameters
-            current_statement_begin__ = 19;
+            current_statement_begin__ = 18;
             local_scalar_t__ theta;
             (void) theta;  // dummy to suppress unused var warning
             if (jacobian__)
@@ -259,19 +243,13 @@ public:
 
             // model body
 
-            current_statement_begin__ = 24;
-            lp_accum__.add(beta_log(theta, get_base1(AB, 1, "AB", 1), get_base1(AB, 2, "AB", 1)));
-            current_statement_begin__ = 27;
-            if (as_bool(logical_gt(S, 1))) {
+            current_statement_begin__ = 23;
+            for (int i = 1; i <= S; ++i) {
 
-                current_statement_begin__ = 28;
-                for (int i = 2; i <= S; ++i) {
-
-                    current_statement_begin__ = 29;
-                    lp_accum__.add((get_base1(POWER, i, "POWER", 1) * beta_log(theta, get_base1(YSUM, i, "YSUM", 1), (get_base1(N, i, "N", 1) - get_base1(YSUM, i, "YSUM", 1)))));
-                }
+                current_statement_begin__ = 24;
+                lp_accum__.add((get_base1(WEIGHTS, i, "WEIGHTS", 1) * beta_log(theta, get_base1(YSUM, i, "YSUM", 1), (get_base1(N, i, "N", 1) - get_base1(YSUM, i, "YSUM", 1)))));
             }
-            current_statement_begin__ = 34;
+            current_statement_begin__ = 28;
             lp_accum__.add(binomial_log<propto__>(YSUMCUR, NCUR, theta));
 
         } catch (const std::exception& e) {
