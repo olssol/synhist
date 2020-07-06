@@ -1,5 +1,6 @@
 #' The 'synhist' package.
 #'
+#'
 #' @docType package
 #' @name    synhist-package
 #' @aliases synhist

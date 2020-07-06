@@ -1,5 +1,5 @@
 //
-//  power prior
+//  Power prior
 //
 
 data {

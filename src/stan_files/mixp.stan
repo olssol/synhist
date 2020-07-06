@@ -1,5 +1,5 @@
 //
-//  MIXTURE
+//  MIXTURE PRIOR
 //
 
 data {
